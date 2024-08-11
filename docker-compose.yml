@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: cefrio_postgres
+    image: postgres:12.16-bullseye
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=cefrio_bd
+      - POSTGRES_PASSWORD=8s8rB8758TYxCqEBQGcTR2V7Kdw78SD7
+    ports:
+      - '9000:5432'
+    volumes:
+      - ./postgres_data:/var/lib/postgresql
+    networks:
+      - cefrio_network_2
+
+networks:
+  cefrio_network_2:
+    name: cefrio_network_2
+    driver: bridge

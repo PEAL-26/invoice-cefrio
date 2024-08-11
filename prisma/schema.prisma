@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id        String  @id @unique @default(uuid())
+  name      String
+  taxpayer  String?
+  telephone String?
+  email     String?
+  address   String?
+  location  String?
+
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  invoices Invoice[]
+
+  @@map("customers")
+}
+
+model Product {
+  id          String   @id @unique @default(uuid())
+  name        String
+  price       Decimal?
+  unitMeasure String?  @default("UN") @map("unit_measure")
+  iva         Decimal?
+
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  invoices InvoiceProduct[]
+
+  @@map("products")
+}
+
+model Invoice {
+  id     String @id @unique @default(uuid())
+  number String @unique @db.VarChar(100)
+  type   String @db.VarChar(150)
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String   @map("customer_id")
+
+  customerDiscount  Decimal?  @default(0.00) @map("customer_discount")
+  financialDiscount Decimal?  @default(0.00) @map("financial_discount")
+  currency          String?
+  exchange          Decimal?  @default(0.00)
+  date              DateTime
+  dueDate           DateTime? @map("due_Date")
+  paymentCondition  String?   @map("payment_condition")
+  reference         String?
+  observation       String?
+
+  // Impostos
+  taxAmount       Decimal? @default(0.00) @map("tax_amount")
+  reasonExemption String?  @map("reason_exemption")
+
+  // Totais
+  total               Decimal? @default(0.00)
+  totalIva            Decimal? @default(0.00) @map("total_iva")
+  totalDiscount       Decimal? @default(0.00) @map("total_discount")
+  totalWithholdingTax Decimal? @default(0.00) @map("total_withholding_tax")
+
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  products InvoiceProduct[]
+  payments InvoicePayment[]
+
+  @@map("invoices")
+}
+
+model InvoiceProduct {
+  id String @id @unique @default(uuid())
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @map("product_id")
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId String  @map("invoice_id")
+
+  date        DateTime?
+  productName String    @map("product_name")
+  unitMeasure String?   @default("UN") @map("unit_measure")
+  price       Decimal?  @default(0.00)
+  quantity    Decimal?  @default(0.00)
+  discount    Decimal?  @default(0.00)
+  iva         Decimal?  @default(0.00)
+  total       Decimal?  @default(0.00)
+  paid        Decimal?  @default(0.00)
+
+  @@map("invoice_products")
+}
+
+model InvoicePayment {
+  id String @id @unique @default(uuid())
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId String  @map("invoice_id")
+
+  method String
+  amount Decimal
+
+  @@map("invoice_payments")
+}
+
+model Bank {
+  id String @id @unique @default(uuid())
+
+  name         String
+  abbreviation String
+  account      String
+  iban         String
+
+  @@map("banks")
+}
+
+model Company {
+  id String @id @unique @default(uuid())
+
+  name      String
+  telephone String?
+  address   String?
+  taxpayer  String?
+  location  String?
+  logo      String?
+
+  @@map("companies")
+}

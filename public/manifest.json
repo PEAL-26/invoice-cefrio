@@ -1,0 +1,28 @@
+{
+  "name": "Cefrio",
+  "short_name": "Cefrio",
+  "theme_color": "#1B3D7A",
+  "background_color": "#fff",
+  "display": "browser",
+  "scope": "/",
+  "start_url": "/",
+  "description": "A CEFRIO, é uma empresa comprometida em proporcionar soluções de alta qualidade em ar condicionado, ventilação, refrigeração e serviços correlatos.",
+  "version": "1.0.0",
+  "icons": [
+    {
+      "src": "logo-48w.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "logo-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "logo-192w.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
