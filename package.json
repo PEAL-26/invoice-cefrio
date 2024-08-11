@@ -5,8 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:prod": "npm i && npm run prisma:generate && npm run migrate:deploy && npm run build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:dev": "npx prisma migrate dev",
+    "migrate:dev:co": "npx prisma migrate dev --create-only",
+    "migrate:deploy": "npx prisma migrate deploy",
+    "prisma:seed": "npx prisma db seed",
+    "prisma:generate": "npx prisma generate"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
