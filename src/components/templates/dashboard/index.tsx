@@ -156,8 +156,7 @@ export function Dashboard() {
     },
   ];
   const totalInvoices = invoices.length;
-  const totalClients = [...new Set(invoices.map((invoice) => invoice.client))]
-    .length;
+  const totalClients = 0// new Set(invoices.map((invoice) => invoice.client))
   const totalProducts = products.length;
   const filteredInvoices = invoices.filter((invoice) => {
     if (invoiceStatus === "all") return true;

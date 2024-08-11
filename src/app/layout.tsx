@@ -6,7 +6,7 @@ import { cn } from "@/libs/utils";
 import { QueryClientProvider } from "@/providers";
 import Tailwind from "primereact/passthrough/tailwind";
 
-import "./globals.css";
+import "../styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
